@@ -33,20 +33,23 @@ public class Rectangle_Cutting {
         for(int i=1; i<=n; i++){
             for(int j=1; j<=m; j++){
                 if(i==j){
-                    dp[i][j] = 1;
+                    dp[i][j] = 0;
                 }else{
-                    int min = Math.min(i,j);
-                    long minMoves = Integer.MAX_VALUE;
-                    for(int k=1; k<=min; k++){
-                        long min1 = 1+dp[i][j-k]+dp[i-k][k];
-                        long min2 = 1+dp[i-k][j]+dp[k][j-k];
-                        minMoves = Math.min(minMoves,Math.min(min1,min2));
+                    long minMoves = Long.MAX_VALUE;
+
+                    for(int k=1; k<=i-1; k++){
+                        minMoves = Math.min(minMoves,1 + dp[i-k][j] + dp[k][j]);
                     }
+
+                    for(int k=1; k<=j-1; k++){
+                        minMoves = Math.min(minMoves,1 + dp[i][k] + dp[i][j-k]);
+                    }
+
                     dp[i][j] = minMoves;
                 }
             }
         }
-        sc.out.println(dp[n][m]-1);
+        sc.out.println(dp[n][m]);
     }
 
     static long gcd(long a, long b) { return b == 0 ? a : gcd(b, a % b); }
